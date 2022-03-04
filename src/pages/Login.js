@@ -67,7 +67,7 @@ Login.propTypes = {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  userLogin: (email) => dispatch(userLoginAction(email)),
+  userLogin: (payload) => dispatch(userLoginAction(payload)),
 });
 
 export default connect(null, mapDispatchToProps)(Login);
