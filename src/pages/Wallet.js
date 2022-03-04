@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import Header from '../components/Header';
 import ExpenseForm from '../components/ExpenseForm';
 import { setCurrenciesAction } from '../actions';
-import { ExpensesTable } from '../components/ExpensesTable';
+import ExpensesTable from '../components/ExpensesTable';
 
 class Wallet extends React.Component {
   componentDidMount() {

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { addExpenseAction } from '../actions';
 
-export class ExpenseForm extends Component {
+class ExpenseForm extends Component {
   state = {
     value: '',
     description: '',
