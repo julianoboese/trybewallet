@@ -1,4 +1,4 @@
-import getExchangeRates from '../components/getExchangeRates';
+import getExchangeRates from '../services/getExchangeRates';
 
 export const USER_LOGIN = 'USER_LOGIN';
 export const ADD_EXPENSE = 'ADD_EXPENSE';

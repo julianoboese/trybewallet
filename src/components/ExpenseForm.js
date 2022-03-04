@@ -7,9 +7,9 @@ export class ExpenseForm extends Component {
   state = {
     value: '',
     description: '',
-    currency: '',
-    method: '',
-    tag: '',
+    currency: 'USD',
+    method: 'Dinheiro',
+    tag: 'Alimentação',
   }
 
   handleChange = ({ target }) => {
@@ -26,6 +26,8 @@ export class ExpenseForm extends Component {
 
   render() {
     const { value, description, currency, method, tag } = this.state;
+    const { currencies } = this.props;
+
     return (
       <section>
         <form onSubmit={ this.handleSubmit }>
@@ -60,10 +62,7 @@ export class ExpenseForm extends Component {
               onChange={ this.handleChange }
               data-testid="currency-input"
             >
-              <option disabled value="">Selecione</option>
-              <option>BRL</option>
-              <option>USD</option>
-              <option>EUR</option>
+              {currencies.map((curr) => <option key={ curr }>{curr}</option>)}
             </select>
           </label>
           <label htmlFor="method">
@@ -75,7 +74,6 @@ export class ExpenseForm extends Component {
               onChange={ this.handleChange }
               data-testid="method-input"
             >
-              <option disabled value="">Selecione</option>
               <option>Dinheiro</option>
               <option>Cartão de crédito</option>
               <option>Cartão de débito</option>
@@ -90,7 +88,6 @@ export class ExpenseForm extends Component {
               onChange={ this.handleChange }
               data-testid="tag-input"
             >
-              <option disabled value="">Selecione</option>
               <option>Alimentação</option>
               <option>Lazer</option>
               <option>Trabalho</option>
@@ -106,11 +103,16 @@ export class ExpenseForm extends Component {
 }
 
 ExpenseForm.propTypes = {
+  currencies: PropTypes.arrayOf(PropTypes.string).isRequired,
   addExpense: PropTypes.func.isRequired,
 };
+
+const mapStateToProps = (state) => ({
+  currencies: state.wallet.currencies,
+});
 
 const mapDispatchToProps = (dispatch) => ({
   addExpense: (payload) => dispatch(addExpenseAction(payload)),
 });
 
-export default connect(null, mapDispatchToProps)(ExpenseForm);
+export default connect(mapStateToProps, mapDispatchToProps)(ExpenseForm);
