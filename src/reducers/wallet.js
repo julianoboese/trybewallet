@@ -1,9 +1,9 @@
-import { ADD_EXPENSE, SET_CURRENCIES } from '../actions';
+import { ADD_EXPENSE, DELETE_EXPENSE, SET_CURRENCIES } from '../actions';
 
 const INITIAL_STATE = {
   currencies: [],
   expenses: [],
-  total: 0,
+  idCounter: 0,
 };
 
 const walletReducer = (state = INITIAL_STATE, { type, payload }) => {
@@ -14,15 +14,17 @@ const walletReducer = (state = INITIAL_STATE, { type, payload }) => {
       currencies: payload,
     });
   case ADD_EXPENSE:
-    payload.id = state.expenses.length;
+    payload.id = state.idCounter;
+
     return ({
       ...state,
       expenses: [...state.expenses, payload],
-      total: payload.currency === 'BRL'
-        ? state.total
-          + parseFloat(payload.value)
-        : state.total
-          + (payload.value * parseFloat(payload.exchangeRates[payload.currency].ask)),
+      idCounter: state.idCounter + 1,
+    });
+  case DELETE_EXPENSE:
+    return ({
+      ...state,
+      expenses: state.expenses.filter((expense) => expense.id !== payload.id),
     });
   default:
     return state;
