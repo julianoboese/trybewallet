@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { addExpenseAction } from '../actions';
+import { addExpenseAction, confirmEditionAction } from '../actions';
 
 class ExpenseForm extends Component {
   state = {
@@ -12,6 +12,24 @@ class ExpenseForm extends Component {
     tag: 'Alimentação',
   }
 
+  // componentDidUpdate() {
+  //   const { editingExpense } = this.props;
+  //   if (Object.keys(editingExpense).length !== 0) {
+  //     this.fillEditingExpenseData(editingExpense);
+  //   }
+  // }
+
+  // fillEditingExpenseData = (editingExpense) => {
+  //   const { value, description, currency, method, tag } = editingExpense;
+  //   this.setState({
+  //     value,
+  //     description,
+  //     currency,
+  //     method,
+  //     tag,
+  //   });
+  // }
+
   handleChange = ({ target }) => {
     const { name, value } = target;
     this.setState({ [name]: value });
@@ -19,14 +37,20 @@ class ExpenseForm extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    const { addExpense } = this.props;
-    addExpense(this.state);
+    const { editingExpense } = this.props;
+    if (Object.keys(editingExpense).length !== 0) {
+      const { confirmEdition } = this.props;
+      confirmEdition({ ...editingExpense, ...this.state });
+    } else {
+      const { addExpense } = this.props;
+      addExpense(this.state);
+    }
     this.setState({ value: '' });
   }
 
   render() {
     const { value, description, currency, method, tag } = this.state;
-    const { currencies } = this.props;
+    const { currencies, editingExpense } = this.props;
 
     return (
       <section>
@@ -95,24 +119,44 @@ class ExpenseForm extends Component {
               <option>Saúde</option>
             </select>
           </label>
-          <button type="submit">Adicionar despesa</button>
+          <button type="submit">
+            {editingExpense && Object.keys(editingExpense).length !== 0
+              ? 'Editar despesa'
+              : 'Adicionar despesa'}
+          </button>
         </form>
       </section>
     );
   }
 }
 
+ExpenseForm.defaultProps = {
+  editingExpense: {},
+};
+
 ExpenseForm.propTypes = {
   currencies: PropTypes.arrayOf(PropTypes.string).isRequired,
   addExpense: PropTypes.func.isRequired,
+  confirmEdition: PropTypes.func.isRequired,
+  editingExpense: PropTypes.shape({
+    id: PropTypes.number,
+    value: PropTypes.string,
+    description: PropTypes.string,
+    currency: PropTypes.string,
+    method: PropTypes.string,
+    tag: PropTypes.string,
+    exchangeRates: PropTypes.objectOf(PropTypes.object),
+  }),
 };
 
 const mapStateToProps = (state) => ({
   currencies: state.wallet.currencies,
+  editingExpense: state.wallet.editingExpense,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   addExpense: (payload) => dispatch(addExpenseAction(payload)),
+  confirmEdition: (payload) => dispatch(confirmEditionAction(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExpenseForm);

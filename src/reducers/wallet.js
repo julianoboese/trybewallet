@@ -1,9 +1,11 @@
-import { ADD_EXPENSE, DELETE_EXPENSE, SET_CURRENCIES } from '../actions';
+import { ADD_EXPENSE, CONFIRM_EDITION, DELETE_EXPENSE,
+  SET_CURRENCIES, START_EDITION } from '../actions';
 
 const INITIAL_STATE = {
   currencies: [],
   expenses: [],
   idCounter: 0,
+  editingExpense: {},
 };
 
 const walletReducer = (state = INITIAL_STATE, { type, payload }) => {
@@ -25,6 +27,19 @@ const walletReducer = (state = INITIAL_STATE, { type, payload }) => {
     return ({
       ...state,
       expenses: state.expenses.filter((expense) => expense.id !== payload.id),
+    });
+  case START_EDITION:
+    return ({
+      ...state,
+      editingExpense: payload,
+    });
+  case CONFIRM_EDITION:
+    return ({
+      ...state,
+      expenses: state.expenses.map((expense) => (
+        expense.id === payload.id ? payload : expense
+      )),
+      editingExpense: {},
     });
   default:
     return state;
