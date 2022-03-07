@@ -12,23 +12,24 @@ class ExpenseForm extends Component {
     tag: 'Alimentação',
   }
 
-  // componentDidUpdate() {
-  //   const { editingExpense } = this.props;
-  //   if (Object.keys(editingExpense).length !== 0) {
-  //     this.fillEditingExpenseData(editingExpense);
-  //   }
-  // }
+  componentDidUpdate(prevProps) {
+    const { editingExpense } = this.props;
+    if (Object.keys(prevProps.editingExpense).length === 0
+    && Object.keys(editingExpense).length !== 0) {
+      this.fillEditingExpenseData(editingExpense);
+    }
+  }
 
-  // fillEditingExpenseData = (editingExpense) => {
-  //   const { value, description, currency, method, tag } = editingExpense;
-  //   this.setState({
-  //     value,
-  //     description,
-  //     currency,
-  //     method,
-  //     tag,
-  //   });
-  // }
+  fillEditingExpenseData = (editingExpense) => {
+    const { value, description, currency, method, tag } = editingExpense;
+    this.setState({
+      value,
+      description,
+      currency,
+      method,
+      tag,
+    });
+  }
 
   handleChange = ({ target }) => {
     const { name, value } = target;
