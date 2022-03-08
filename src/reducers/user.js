@@ -9,7 +9,7 @@ const userReducer = (state = INITIAL_STATE, { type, payload }) => {
   case USER_LOGIN:
     return ({
       ...state,
-      email: payload,
+      email: payload.email,
     });
   default:
     return state;

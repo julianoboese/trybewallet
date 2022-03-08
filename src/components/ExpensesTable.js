@@ -76,8 +76,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  deleteExpense: (payload) => dispatch(deleteExpenseAction(payload)),
-  startEdition: (payload) => dispatch(startEditionAction(payload)),
+  deleteExpense: (expense) => dispatch(deleteExpenseAction(expense)),
+  startEdition: (expense) => dispatch(startEditionAction(expense)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExpensesTable);

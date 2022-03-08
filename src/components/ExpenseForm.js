@@ -156,8 +156,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  addExpense: (payload) => dispatch(addExpenseAction(payload)),
-  confirmEdition: (payload) => dispatch(confirmEditionAction(payload)),
+  addExpense: (expense) => dispatch(addExpenseAction(expense)),
+  confirmEdition: (expense) => dispatch(confirmEditionAction(expense)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExpenseForm);

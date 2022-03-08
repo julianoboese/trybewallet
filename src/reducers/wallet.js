@@ -13,31 +13,31 @@ const walletReducer = (state = INITIAL_STATE, { type, payload }) => {
   case SET_CURRENCIES:
     return ({
       ...state,
-      currencies: payload,
+      currencies: payload.currencies,
     });
   case ADD_EXPENSE:
-    payload.id = state.idCounter;
+    payload.expense.id = state.idCounter;
 
     return ({
       ...state,
-      expenses: [...state.expenses, payload],
+      expenses: [...state.expenses, payload.expense],
       idCounter: state.idCounter + 1,
     });
   case DELETE_EXPENSE:
     return ({
       ...state,
-      expenses: state.expenses.filter((expense) => expense.id !== payload.id),
+      expenses: state.expenses.filter((expense) => expense.id !== payload.expense.id),
     });
   case START_EDITION:
     return ({
       ...state,
-      editingExpense: payload,
+      editingExpense: payload.expense,
     });
   case CONFIRM_EDITION:
     return ({
       ...state,
       expenses: state.expenses.map((expense) => (
-        expense.id === payload.id ? payload : expense
+        expense.id === payload.expense.id ? payload.expense : expense
       )),
       editingExpense: {},
     });
