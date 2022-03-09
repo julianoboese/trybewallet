@@ -7,17 +7,26 @@ class ExpenseForm extends Component {
   state = {
     value: '',
     description: '',
-    currency: 'USD',
+    currency: '',
     method: 'Dinheiro',
     tag: 'Alimentação',
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
+    if (!prevState.currency) {
+      this.setFirstCurrency();
+    }
+
     const { editingExpense } = this.props;
     if (Object.keys(prevProps.editingExpense).length === 0
     && Object.keys(editingExpense).length !== 0) {
       this.fillEditingExpenseData(editingExpense);
     }
+  }
+
+  setFirstCurrency = () => {
+    const { currencies } = this.props;
+    this.setState({ currency: currencies[0] });
   }
 
   fillEditingExpenseData = (editingExpense) => {
